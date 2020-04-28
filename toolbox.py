@@ -161,7 +161,7 @@ class sphereical_transport:
         #set up a temporary area average function
         avg_A = lambda i:(self.A(i) + self.A(i+1))/2
         A = np.zeros((self.cells+1,self.cells+1))
-        q = np.zer0s(self.cells+1)
+        q = np.zeros(self.cells+1)
         #set the first equation
         A[0][0] = (avg_A(0)**2/self.V(0)/3/(self.sig_t - self.legendre_xs_mom[0])) + (self.sig_a*self.V(0)/4)
         A[0][1] = (self.sig_a*self.V(0)/4) - (avg_A(0)**2/self.V(0)/3/(self.sig_t - self.legendre_xs_mom[0]))
@@ -173,7 +173,7 @@ class sphereical_transport:
         A[self.cells][self.cells] += self.sig_a*self.V(self.cells-1)/4
         q[self.cells] = self.legendre_xs_mom[0]*(phi[self.cells-1]*self.V(self.cells-1)/2 - phi_0[self.cells-1]*self.V(self.cells-1)/2)
         summ = 0 
-        for ang in self.n:
+        for ang in range(self.n):
             if self.ang_cell_centers[ang] > 0:
                 summ += self.ang_cell_centers[ang]*self.w[ang]
         summ *= self.A(self.cells)
@@ -197,7 +197,7 @@ class sphereical_transport:
         #convert the accelerated scalar fluxes into angular fluxes
         for i in range(self.cells):
             for ang in range(self.n):
-                self.psi[ang][i] += (0.5*(e_phi[i]+e_phi[i+1])) + ((3/2)*J[i]*self.ang_cell_centers[ang])
+                self.psi[ang][i] += (phi[i]/2) + ((3/2)*J[i]*self.ang_cell_centers[ang])
         #update scattering moments
         for i in range(self.cells):    
             self.update_scat_source_mom(i,self.psi[:,i])
