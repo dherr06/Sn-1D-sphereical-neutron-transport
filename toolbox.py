@@ -20,10 +20,6 @@ class sphereical_transport:
                 Jin += -1*ang_cell_centers[ang]*psi_incident[ang]*w[ang]
             self.psi_incident /= Jin
         self.scat_order = scat_order
-        #if scattering order = 0 then we want to change the value to 1 for loop purposes
-        #if scat_order == 0:
-        #    self.scat_order = 1
-        #    scat_order = 1
         self.ang_cell_centers = ang_cell_centers
         self.w = w
         self.alpha = alpha
@@ -161,6 +157,8 @@ class sphereical_transport:
         #if we are accelerating, save psi as a member variable because it is needed for acceleration
         if self.accelerate == True:
             self.psi = psi
+        print('Angular Flux')
+        print(psi)
         #reuturn phi not psi
         phi = np.zeros(self.cells)
         for i in range(self.cells):
@@ -218,7 +216,7 @@ class sphereical_transport:
         #we need delta j outflow for this
         delta_J = 0
         for ang in range(int(self.n/2),self.n):
-            delta_J -= (self.ang_cell_centers[ang]*self.w[ang]*e_phi[self.cells]/2.0)
+            delta_J += (self.ang_cell_centers[ang]*self.w[ang]*e_phi[self.cells])
         #use delta j to update psi outflows
         for ang in range(int(self.n/2),self.n):
             self.outflow[ang - int(self.n/2)] += ((e_phi[self.cells] + (3.0*delta_J*self.ang_cell_centers[ang]))/2.0)
