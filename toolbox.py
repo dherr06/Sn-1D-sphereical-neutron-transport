@@ -157,8 +157,6 @@ class sphereical_transport:
         #if we are accelerating, save psi as a member variable because it is needed for acceleration
         if self.accelerate == True:
             self.psi = psi
-        print('Angular Flux')
-        print(psi)
         #reuturn phi not psi
         phi = np.zeros(self.cells)
         for i in range(self.cells):
